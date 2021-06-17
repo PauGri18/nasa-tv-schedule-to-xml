@@ -349,7 +349,6 @@ for file in os.listdir(directory):
 
         starttime = datetime.now()
         try:
-            #pdf = pdfplumber.open(pdffilename)
             ##print('Pages: {0}'.format(len(pdf.pages)), file=debugout)
 
             with pdfplumber.open(pdffilename) as pdf:
