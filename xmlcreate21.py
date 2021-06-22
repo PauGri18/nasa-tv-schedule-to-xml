@@ -67,6 +67,7 @@ def processpdf(apdf):
         daytable = pg.extract_table()
 
         dayRowNo = 0
+        startData = False
 
         #
         # pdf format:
@@ -90,8 +91,6 @@ def processpdf(apdf):
             # extract row
             dayrow = daytable[dayRowNo]
 
-
-
             if (pc == 1) and (dayRowNo == 1):
                 #
                 # On page 1, extract day - date in col 1
@@ -104,27 +103,27 @@ def processpdf(apdf):
                     #pageday = daydate[0]
                     pagedate = daydate[1]
                 else:
-                     raise ValueError('Cannot get date from first line of first page')
-
+                    raise ValueError('Cannot get date from first line of first page')
 
             # print pageno, line
             print(pg, dayRowNo, ' ',   sep=', ', end='', file=debugout)
 
 # ------------------------
 
-            # each column in table
+            # First column in table
             dayColNo = 0
 
+            # process column 0
             coltext = dayrow[dayColNo]
             coltext = str(coltext).replace('\n', '')
+            coltext = str(coltext).replace('.', '')
 
-            # not a header
-            if (dayRowNo > 2):
+            # Have we read past the header
+            if (coltext == '12 am'):
+                startData = True
 
-                # 0 = time column
-
-                # remove '.' in time columns
-                coltext = str(coltext).replace('.', '')
+            #if (dayRowNo > 2):
+            if startData:
 
                 # split HH:MM and am/pm
                 coltime = coltext.split(' ')
@@ -237,8 +236,9 @@ def processpdf(apdf):
                 #
 
             else:
-                # dayrowNo > 2, print a newline
+                # In Header, print a newline
                 print('', file=debugout)
+                pass
 
             #
             # Last column
@@ -308,7 +308,7 @@ if (r.status_code == 200):
 
 else:
     print('Error {0} not found'.format(r.url))
-    #exit()
+    time.sleep(5)
 
 
 
