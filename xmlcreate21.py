@@ -270,8 +270,6 @@ def processpdf(apdf):
 
 est = pytz.timezone('US/Eastern')
 
-
-
 # ------------------------
 
 # main url
@@ -280,21 +278,21 @@ est = pytz.timezone('US/Eastern')
 # files stored at
 #   url = 'https://www.nasa.gov/sites/default/files/atoms/files'
 #
-# filenames in the format "m-d-yyyy"
+# filenames in the format "m-d-yyyy", date always refers to a Monday
 #   fn = 'nasa-tv-schedule-for-week-of-6-7-2021.pdf'
 
 today = date.today()
 idx = (today.weekday() + 1) % 7   # MON = 0, SUN = 6 -> SUN = 0 .. SAT = 6
 ##print('idx=',idx)
 
-# dd/mm/YY -> last sunday
+# dd/mm/YY -> last Monday
 d1 = (today - timedelta(days=idx-1))
 url = 'https://www.nasa.gov/sites/default/files/atoms/files'
 
 
-lastsunday = "{0}-{1}-{2}".format(d1.month, d1.day, d1.year)
-##print('Last Sunday = ', lastsunday)
-fn = 'nasa-tv-schedule-for-week-of-{0}.pdf'.format(lastsunday)
+lastMonday = "{0}-{1}-{2}".format(d1.month, d1.day, d1.year)
+##print('Last Monday = ', lastMonday)
+fn = 'nasa-tv-schedule-for-week-of-{0}.pdf'.format(lastMonday)
 
 r = requests.get(url + '/' + fn, \
         headers={'User-Agent': 'Mozilla/5.0'}, \
